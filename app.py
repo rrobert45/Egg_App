@@ -95,10 +95,10 @@ def index():
     temp_state = 'On' if GPIO.input(temp_pin) == GPIO.LOW else 'Off'
     humid_state = 'On' if GPIO.input(humid_pin) == GPIO.LOW else 'Off'
     day = calculate_day()
-    hatch_day = start_date + timedelta(days=21)
     progress = day / 21 * 100
     start_date_str = config['start_date']
     start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date()
+    hatch_day = start_date + timedelta(days=21)
     return render_template('index.html', temperature=temperature, humidity=humidity, temp_state=temp_state, humid_state=humid_state, day=day, progress=progress, hatch_day=hatch_day.strftime('%Y-%m-%d'), start_date=start_date.strftime('%m-%d-%Y'))
 # Define Flask route for triggering egg turning
 @app.route('/turn')
