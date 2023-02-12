@@ -90,12 +90,12 @@ def log_data(temperature, humidity, day):
 # Define Flask route for displaying web interface
 @app.route('/')
 def index():
-    temperature = sensor.temperature * 1.8 + 32  # Convert to Fahrenheit
-    humidity = sensor.relative_humidity
+    temperature = round(sensor.temperature * 1.8 + 32,1 ) # Convert to Fahrenheit
+    humidity = round(sensor.relative_humidity,1)
     temp_state = 'On' if GPIO.input(temp_pin) == GPIO.LOW else 'Off'
     humid_state = 'On' if GPIO.input(humid_pin) == GPIO.LOW else 'Off'
     day = calculate_day()
-    progress = day / 21 * 100
+    progress = round(day / 21 * 100,)
     start_date_str = config['start_date']
     start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date()
     hatch_day = start_date + timedelta(days=21)
