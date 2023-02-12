@@ -21,13 +21,19 @@ sensor = adafruit_ahtx0.AHTx0(i2c)
 # Initialize Flask web application
 app = Flask(__name__)
 
-# Initialize MongoDB database
-client = MongoClient('mongodb://localhost:27017/')
-db = client['incubator']
+
+
 
 # Load configuration from JSON file
 with open('config.json') as f:
     config = json.load(f)
+
+# Initialize MongoDB database
+uri = config['uri']
+client = MongoClient(uri)
+db = client[config['database']]
+incubator = db[config['collection']]
+
 
 # Retrieve start date and humidity ranges from configuration
 start_date = datetime.strptime(config['start_date'], '%Y-%m-%d').date()
@@ -83,7 +89,7 @@ def calculate_humidity(day):
 # Define function for logging data to MongoDB
 def log_data(temperature, humidity, day):
     data = {'timestamp': datetime.now(), 'temperature': temperature, 'humidity': humidity, 'day': day}
-    db.incubator.insert_one(data)
+    incubator.insert_one(data)
 
 # Define Flask route for displaying web interface
 @app.route('/')

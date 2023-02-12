@@ -1,4 +1,7 @@
 {
+  "uri": "mongodb+srv://rrobert45:pa55word@cluster0.r8sgbwj.mongodb.net/?retryWrites=true&w=majority",
+  "database": "EggApp",
+  "collection": "incubator",
   "start_date": "2023-02-01",
   "humidity_ranges": [
     [50, 55, 4],
