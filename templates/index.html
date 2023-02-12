@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Egg Incubator</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<style>
+		body {
+			font-family: Arial, Helvetica, sans-serif;
+			margin: 0;
+		}
+
+		header {
+			background-color: #333;
+			color: white;
+			padding: 15px;
+			text-align: center;
+		}
+
+		h1 {
+			margin: 0;
+		}
+
+		.container {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: center;
+			align-items: center;
+			height: 100vh;
+			padding: 20px;
+		}
+
+		.card {
+			background-color: #f2f2f2;
+			border-radius: 10px;
+			box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+			padding: 20px;
+			text-align: center;
+			margin: 10px;
+			min-width: 200px;
+		}
+
+		.card h2 {
+			font-size: 2em;
+			margin-top: 0;
+		}
+
+		.card p {
+			font-size: 1.5em;
+			margin-bottom: 0;
+		}
+
+		.progress {
+			background-color: #ddd;
+			border-radius: 10px;
+			height: 20px;
+			margin: 10px;
+			overflow: hidden;
+		}
+
+		.progress-bar {
+			background-color: #4CAF50;
+			height: 100%;
+			text-align: center;
+			line-height: 20px;
+			color: white;
+		}
+	</style>
+</head>
+<body>
+	<header>
+		<h1>Egg Incubator</h1>
+	</header>
+
+	<div class="container">
+		<div class="card">
+			<h2>Temperature</h2>
+			<p>{{ temperature }} &deg;C</p>
+		</div>
+
+		<div class="card">
+			<h2>Humidity</h2>
+			<p>{{ humidity }}%</p>
+		</div>
+
+		<div class="card">
+			<h2>Day</h2>
+			<p>{{ day }}</p>
+		</div>
+
+		<div class="card">
+			<h2>Hatch Day</h2>
+			<p>{{ hatch_day.strftime('%Y-%m-%d') }}</p>
+		</div>
+
+		<div class="card">
+			<h2>Progress</h2>
+			<div class="progress">
+				<div class="progress-bar" style="width: {{ progress }}%">{{ progress }}%</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
