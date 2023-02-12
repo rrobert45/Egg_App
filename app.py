@@ -21,9 +21,6 @@ sensor = adafruit_ahtx0.AHTx0(i2c)
 # Initialize Flask web application
 app = Flask(__name__)
 
-
-
-
 # Load configuration from JSON file
 with open('config.json') as f:
     config = json.load(f)
@@ -34,14 +31,13 @@ client = MongoClient(uri)
 db = client[config['database']]
 incubator = db[config['collection']]
 
-
 # Retrieve start date and humidity ranges from configuration
 start_date = datetime.strptime(config['start_date'], '%Y-%m-%d').date()
 humidity_ranges = config['humidity_ranges']
 
 # Define temperature and humidity thresholds
-temp_low = 36.7  # Celsius
-temp_high = 37.8  # Celsius
+temp_low = 98.3  # Fahrenheit
+temp_high = 100.0  # Fahrenheit
 humid_low = humidity_ranges[0][0]  # Percent
 humid_high = humidity_ranges[0][1]  # Percent
 
@@ -94,11 +90,11 @@ def log_data(temperature, humidity, day):
 # Define Flask route for displaying web interface
 @app.route('/')
 def index():
-    temperature = sensor.temperature
-    humidity = sensor.relative_humidity
+    temperature = round(sensor.temperature * 1.8 + 32, 1)  # Convert Celsius to Fahrenheit and round to the nearest tenth
+    humidity = round(sensor.relative_humidity, 1)  # Round humidity to the nearest tenth
     day = calculate_day()
     hatch_day = start_date + timedelta(days=21)
-    progress = day / 21 * 100
+    progress = round(day / 21 * 100, 1)  # Calculate and round progress to the nearest tenth
     return render_template('index.html', temperature=temperature, humidity=humidity, day=day, hatch_day=hatch_day, progress=progress)
 
 # Define Flask route for triggering egg turning
@@ -114,11 +110,12 @@ def turn():
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
+
     # Main program loop
     while True:
         # Read temperature and humidity from sensor
-        temperature = sensor.temperature
-        humidity = sensor.relative_humidity
+        temperature = round(sensor.temperature * 1.8 + 32, 1)  # Convert Celsius to Fahrenheit and round to the nearest tenth
+        humidity = round(sensor.relative_humidity, 1)  # Round humidity to the nearest tenth
 
         # Control temperature based on user-defined thresholds
         if temperature < temp_low:
