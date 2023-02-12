@@ -73,14 +73,20 @@
 
 	<div class="container">
 		<div class="card">
-			<h2>Temperature</h2>
-			<p>{{ temperature }} &deg;C</p>
-		</div>
-
-		<div class="card">
-			<h2>Humidity</h2>
-			<p>{{ humidity }}%</p>
-		</div>
+			<div class="card-body">
+			  <h5 class="card-title">Temperature</h5>
+			  <p class="card-text">{{ temperature }}&deg;F</p>
+			  <h6 class="card-subtitle mb-2 text-muted">Relay State: {{ temp_state }}</h6>
+			</div>
+		  </div>
+		  
+		  <div class="card">
+			<div class="card-body">
+			  <h5 class="card-title">Humidity</h5>
+			  <p class="card-text">{{ humidity }}%</p>
+			  <h6 class="card-subtitle mb-2 text-muted">Relay State: {{ humid_state }}</h6>
+			</div>
+		  </div>
 
 		<div class="card">
 			<h2>Day</h2>
