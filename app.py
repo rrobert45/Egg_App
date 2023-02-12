@@ -113,32 +113,31 @@ def turn():
         return 'Egg turning already triggered within the last 2 hours'
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True, host='0.0.0.0')
+    # Main program loop
+    while True:
+        # Read temperature and humidity from sensor
+        temperature = sensor.temperature
+        humidity = sensor.relative_humidity
 
-# Main program loop
-while True:
-    # Read temperature and humidity from sensor
-    temperature = sensor.temperature
-    humidity = sensor.relative_humidity
+        # Control temperature based on user-defined thresholds
+        if temperature < temp_low:
+            set_temp(True)
+        elif temperature > temp_high:
+            set_temp(False)
 
-    # Control temperature based on user-defined thresholds
-    if temperature < temp_low:
-        set_temp(True)
-    elif temperature > temp_high:
-        set_temp(False)
+        # Control humidity based on calculated humidity ranges
+        day = calculate_day()
+        humid_target = calculate_humidity(day)
+        if humid_target == 0:
+            set_humid(False)
+        elif humidity < humid_target - 2:
+            set_humid(True)
+        elif humidity > humid_target + 2:
+            set_humid(False)
 
-    # Control humidity based on calculated humidity ranges
-    day = calculate_day()
-    humid_target = calculate_humidity(day)
-    if humid_target == 0:
-        set_humid(False)
-    elif humidity < humid_target - 2:
-        set_humid(True)
-    elif humidity > humid_target + 2:
-        set_humid(False)
+        # Log data to MongoDB
+        log_data(temperature, humidity, day)
 
-    # Log data to MongoDB
-    log_data(temperature, humidity, day)
-
-    # Wait 10 seconds before repeating loop
-    time.sleep(10)
+        # Wait 10 seconds before repeating loop
+        time.sleep(10)
