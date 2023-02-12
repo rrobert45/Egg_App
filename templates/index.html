@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<title>Egg Incubator</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,13 +8,13 @@
 		body {
 			font-family: Arial, Helvetica, sans-serif;
 			margin: 0;
-			background-color: #0d1117;
-        	color: #fff;
+			background-color: #2B2B2B;
+			color: #FFFFFF;
 		}
 
 		header {
-			background-color: #172c3e;
-			color: #fff;
+			background-color: #1E7F38;
+			color: rgb(0, 0, 0);
 			padding: 15px;
 			text-align: center;
 		}
@@ -32,7 +33,7 @@
 		}
 
 		.card {
-			background-color: #242b38;
+			background-color: #4A4A4A;
 			border-radius: 10px;
 			box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 			padding: 20px;
@@ -44,17 +45,17 @@
 		.card h2 {
 			font-size: 2em;
 			margin-top: 0;
-			color: #fff;
+			color: #1E7F38;
 		}
 
 		.card p {
 			font-size: 1.5em;
 			margin-bottom: 0;
-			color: #fff;
+			color: #FFFFFF;
 		}
 
 		.progress {
-			background-color: #242b38;
+			background-color: #242424;
 			border-radius: 10px;
 			height: 20px;
 			margin: 10px;
@@ -62,22 +63,15 @@
 		}
 
 		.progress-bar {
-			background-color: #3c9a1f;
+			background-color: #1E7F38;
 			height: 100%;
 			text-align: center;
 			line-height: 20px;
-			color: #000;
-		}
-
-		.relay-on {
-			color: #3c9a1f;
-		}
-
-		.relay-off {
-			color: #f50d1a;
+			color: #FFFFFF;
 		}
 	</style>
 </head>
+
 <body>
 	<header>
 		<h1>Egg Incubator</h1>
@@ -86,19 +80,19 @@
 	<div class="container">
 		<div class="card">
 			<div class="card-body">
-			  <h2 class="card-title">Temperature</h2>
-			  <p class="card-text">{{ temperature }}&deg;F</p>
-			  <h3 class="card-subtitle mb-2 text-muted">Relay State: {{ temp_state }}</h3>
+				<h2 class="card-title">Temperature</h2>
+				<p class="card-text">{{ temperature }}&deg;F</p>
+				<h3 class="card-subtitle mb-2 text-muted">Relay State: {{ temp_state }}</h3>
 			</div>
-		  </div>
-		  
-		  <div class="card">
+		</div>
+
+		<div class="card">
 			<div class="card-body">
-			  <h2 class="card-title">Humidity</h2>
-			  <p class="card-text">{{ humidity }}%</p>
-			  <h3 class="card-subtitle mb-2 text-muted">Relay State: {{ humid_state }}</h3>
+				<h2 class="card-title">Humidity</h2>
+				<p class="card-text">{{ humidity }}%</p>
+				<h3 class="card-subtitle mb-2 text-muted">Relay State: {{ humid_state }}</h3>
 			</div>
-		  </div>
+		</div>
 
 		<div class="card">
 			<h2>Day</h2>
@@ -118,4 +112,5 @@
 		</div>
 	</div>
 </body>
+
 </html>
