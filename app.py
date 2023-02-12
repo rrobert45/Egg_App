@@ -6,6 +6,7 @@ import json
 from datetime import datetime, timedelta
 from pymongo import MongoClient
 from flask import Flask, render_template, request
+from threading import Thread
 
 # Initialize GPIO pins for temperature and humidity control
 GPIO.setmode(GPIO.BCM)
@@ -111,38 +112,41 @@ def turn():
     else:
         return 'Egg turning already triggered within the last 2 hours'
 
+def sensor_loop():
+    while True:
+        # Read temperature and humidity from sensor
+        temperature = round(sensor.temperature * 1.8 + 32, 1)  # Convert Celsius to Fahrenheit and round to the nearest tenth
+        humidity = round(sensor.relative_humidity, 1)  # Round humidity to the nearest tenth
+
+        # Control temperature based on user-defined thresholds
+        if temperature < temp_low:
+            set_temp(True)
+        elif temperature > temp_high:
+            set_temp(False)
+
+        # Control humidity based on calculated humidity ranges
+        day = calculate_day()
+        humid_target = calculate_humidity(day)
+        if humid_target == 0:
+            set_humid(False)
+        elif humidity < humid_target - 2:
+            set_humid(True)
+        elif humidity > humid_target + 2:
+            set_humid(False)
+
+        # Log data to MongoDB
+        log_data(temperature, humidity, day)
+
+        # Wait 10 seconds before repeating loop
+        time.sleep(10)
+
 if __name__ == '__main__':
+    # Start the sensor loop in a separate thread
+    sensor_thread = Thread(target=sensor_loop)
+    sensor_thread.start()
+
+    # Start the Flask application
     app.run(debug=True, host='0.0.0.0')
 
-    try:
-        # Main program loop
-        while True:
-            # Read temperature and humidity from sensor
-            temperature = round(sensor.temperature * 1.8 + 32, 1)  # Convert Celsius to Fahrenheit and round to the nearest tenth
-            humidity = round(sensor.relative_humidity, 1)  # Round humidity to the nearest tenth
-
-            # Control temperature based on user-defined thresholds
-            if temperature < temp_low:
-                set_temp(True)
-            elif temperature > temp_high:
-                set_temp(False)
-
-            # Control humidity based on calculated humidity ranges
-            day = calculate_day()
-            humid_target = calculate_humidity(day)
-            if humid_target == 0:
-                set_humid(False)
-            elif humidity < humid_target - 2:
-                set_humid(True)
-            elif humidity > humid_target + 2:
-                set_humid(False)
-
-            # Log data to MongoDB
-            log_data(temperature, humidity, day)
-
-            # Wait 10 seconds before repeating loop
-            time.sleep(10)
-
-    except KeyboardInterrupt:
-        # Cleanup GPIO pins
-        GPIO.cleanup()
+    # Cleanup GPIO pins
+    GPIO.cleanup()
