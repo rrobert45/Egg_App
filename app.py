@@ -100,8 +100,9 @@ def index():
 
     day = calculate_day()
     hatch_day = start_date + timedelta(days=21)
+    start_date_str = start_date.strftime('%Y-%m-%d')
     progress = round(day / 21 * 100, 1)  # Calculate and round progress to the nearest tenth
-    return render_template('index.html', temperature=temperature, humidity=humidity, day=day, hatch_day=hatch_day, progress=progress, temp_state=temp_state, humid_state=humid_state)
+    return render_template('index.html', temperature=temperature, humidity=humidity, day=day, hatch_day=hatch_day, progress=progress, temp_state=temp_state, humid_state=humid_state,start_date=start_date_str)
 
 
 # Define Flask route for triggering egg turning
