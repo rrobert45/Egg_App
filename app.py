@@ -90,20 +90,16 @@ def log_data(temperature, humidity, day):
 # Define Flask route for displaying web interface
 @app.route('/')
 def index():
-    # Read temperature and humidity from sensor
-    temperature = round(sensor.temperature * 1.8 + 32, 1)  # Convert Celsius to Fahrenheit and round to the nearest tenth
-    humidity = round(sensor.relative_humidity, 1)  # Round humidity to the nearest tenth
-
-    # Get the state of the temperature and humidity relays
-    temp_state = 'ON' if GPIO.input(temp_pin) == GPIO.LOW else 'OFF'
-    humid_state = 'ON' if GPIO.input(humid_pin) == GPIO.LOW else 'OFF'
-
+    temperature = sensor.temperature * 1.8 + 32  # Convert to Fahrenheit
+    humidity = sensor.relative_humidity
+    temp_state = 'On' if GPIO.input(temp_pin) == GPIO.LOW else 'Off'
+    humid_state = 'On' if GPIO.input(humid_pin) == GPIO.LOW else 'Off'
     day = calculate_day()
     hatch_day = start_date + timedelta(days=21)
     progress = day / 21 * 100
-    start_date_str = start_date.strftime('%Y-%m-%d')
-    return render_template('index.html', temperature=temperature, humidity=humidity, temp_state=temp_state, humid_state=humid_state, day=day, progress=progress, hatch_day=hatch_day.strftime('%Y-%m-%d'), start_date=start_date_str)
-
+    start_date_str = config['start_date']
+    start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date()
+    return render_template('index.html', temperature=temperature, humidity=humidity, temp_state=temp_state, humid_state=humid_state, day=day, progress=progress, hatch_day=hatch_day.strftime('%Y-%m-%d'), start_date=start_date.strftime('%m-%d-%Y'))
 # Define Flask route for triggering egg turning
 @app.route('/turn')
 def turn():
