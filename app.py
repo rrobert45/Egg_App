@@ -111,30 +111,35 @@ def turn():
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
 
-    # Main program loop
-    while True:
-        # Read temperature and humidity from sensor
-        temperature = round(sensor.temperature * 1.8 + 32, 1)  # Convert Celsius to Fahrenheit and round to the nearest tenth
-        humidity = round(sensor.relative_humidity, 1)  # Round humidity to the nearest tenth
+    try:
+        # Main program loop
+        while True:
+            # Read temperature and humidity from sensor
+            temperature = round(sensor.temperature * 1.8 + 32, 1)  # Convert Celsius to Fahrenheit and round to the nearest tenth
+            humidity = round(sensor.relative_humidity, 1)  # Round humidity to the nearest tenth
 
-        # Control temperature based on user-defined thresholds
-        if temperature < temp_low:
-            set_temp(True)
-        elif temperature > temp_high:
-            set_temp(False)
+            # Control temperature based on user-defined thresholds
+            if temperature < temp_low:
+                set_temp(True)
+            elif temperature > temp_high:
+                set_temp(False)
 
-        # Control humidity based on calculated humidity ranges
-        day = calculate_day()
-        humid_target = calculate_humidity(day)
-        if humid_target == 0:
-            set_humid(False)
-        elif humidity < humid_target - 2:
-            set_humid(True)
-        elif humidity > humid_target + 2:
-            set_humid(False)
+            # Control humidity based on calculated humidity ranges
+            day = calculate_day()
+            humid_target = calculate_humidity(day)
+            if humid_target == 0:
+                set_humid(False)
+            elif humidity < humid_target - 2:
+                set_humid(True)
+            elif humidity > humid_target + 2:
+                set_humid(False)
 
-        # Log data to MongoDB
-        log_data(temperature, humidity, day)
+            # Log data to MongoDB
+            log_data(temperature, humidity, day)
 
-        # Wait 10 seconds before repeating loop
-        time.sleep(10)
+            # Wait 10 seconds before repeating loop
+            time.sleep(10)
+
+    except KeyboardInterrupt:
+        # Cleanup GPIO pins
+        GPIO.cleanup()
