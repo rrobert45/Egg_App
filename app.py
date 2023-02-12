@@ -97,7 +97,7 @@ def index():
     day = calculate_day()
     progress = day / 21 * 100
     start_date_str = config['start_date']
-    start_date = datetime.strptime(start_date_str, '%m-%d-%Y').date()
+    start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date()
     hatch_day = start_date + timedelta(days=21)
     return render_template('index.html', temperature=temperature, humidity=humidity, temp_state=temp_state, humid_state=humid_state, day=day, progress=progress, hatch_day=hatch_day.strftime('%m-%d-%Y'), start_date=start_date.strftime('%m-%d-%Y'))
 # Define Flask route for triggering egg turning
